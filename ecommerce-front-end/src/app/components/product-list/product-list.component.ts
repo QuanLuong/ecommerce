@@ -12,21 +12,32 @@ export class ProductListComponent implements OnInit {
 
   products: Product[];
   currentCategoryId: number;
+  searchMode: boolean;
 
   constructor(private productService: ProductService, private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(() => {
       this.listProducts();
-    })
-    this.listProducts();
+    });
   }
 
   //check if "id" parameter is available
   
   listProducts(){
-    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+    this.searchMode = this.route.snapshot.paramMap.has('keyword');
+    console.log(`searchMode=${this.searchMode}`)
+    if(this.searchMode){
+      this.handleSearchProducts();
+    }
+    else{
+      this.handleListProduct();
+    }
+  }
 
+  handleListProduct(){
+    const hasCategoryId: boolean = this.route.snapshot.paramMap.has('id');
+    
     if(hasCategoryId){
       //get the "id" param string. convert to number suing the "+" symbol
       this.currentCategoryId = Number(this.route.snapshot.paramMap.get('id'));
@@ -39,6 +50,16 @@ export class ProductListComponent implements OnInit {
     this.productService.getProductList(this.currentCategoryId).subscribe(
       data => {
         this.products = data
+      }
+    )
+  }
+
+  handleSearchProducts(){
+    const theKeyword: string = this.route.snapshot.paramMap.get('keyword') || '';
+
+    this.productService.searchProducts(theKeyword).subscribe(
+      data => {
+        this.products = data;
       }
     )
   }
