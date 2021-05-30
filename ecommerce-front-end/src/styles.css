@@ -555,7 +555,7 @@ input.au-input.au-input-xl {
 }
 
 .main-content.page-m {
-    padding: 10% 15%!important
+    padding: 10% 30% 10% 5%;
 }
 
 
@@ -1120,4 +1120,12 @@ footer ul li {
         border: 0;
         padding: 8px 0
     }
+}
+
+.btn-danger{
+    background-color: #dc3545 !important;
+}
+
+.btn-primary{
+    background-color: #0d6efd !important;
 }
